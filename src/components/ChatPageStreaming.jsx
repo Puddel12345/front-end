@@ -79,6 +79,7 @@ const ChatPage = ({ onBack }) => {
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
+      let buffer = '';
       
       if (reader) {
         try {
@@ -87,30 +88,56 @@ const ChatPage = ({ onBack }) => {
             if (done) break;
             
             const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n');
+            buffer += chunk;
             
+            // Process complete SSE messages (ending with double newline)
+            const messages = buffer.split('\n\n');
+            buffer = messages.pop() || ''; // Keep incomplete message in buffer
+            
+            for (const message of messages) {
+              if (!message.trim()) continue;
+              
+              // Parse SSE message format
+              const lines = message.split('\n');
+              for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                  try {
+                    const data = JSON.parse(line.slice(6));
+                    
+                    if (data.type === 'text') {
+                      fullContent += data.content;
+                      currentStreamingMessageRef.current += data.content;
+                      
+                      // Update UI in REAL-TIME
+                      setCurrentStreamingMessage(currentStreamingMessageRef.current);
+                      
+                    } else if (data.type === 'thinking') {
+                      thinkingContent += data.content;
+                      
+                    } else if (data.type === 'complete') {
+                      // Stream finished
+                      console.log('Stream complete, fullContent:', fullContent);
+                    }
+                  } catch (e) {
+                    console.log('JSON parse error:', e, 'Line:', line);
+                  }
+                }
+              }
+            }
+          }
+          
+          // Process any remaining buffer
+          if (buffer.trim()) {
+            const lines = buffer.split('\n');
             for (const line of lines) {
               if (line.startsWith('data: ')) {
                 try {
                   const data = JSON.parse(line.slice(6));
-                  
                   if (data.type === 'text') {
                     fullContent += data.content;
-                    currentStreamingMessageRef.current += data.content;
-                    
-                    // Update UI in REAL-TIME
-                    setCurrentStreamingMessage(currentStreamingMessageRef.current);
-                    
-                  } else if (data.type === 'thinking') {
-                    thinkingContent += data.content;
-                    
-                  } else if (data.type === 'complete') {
-                    // Stream finished
-                    break;
                   }
                 } catch (e) {
-                  // Ignore JSON parse errors
-                  console.log('JSON parse error:', e);
+                  console.log('Final buffer parse error:', e);
                 }
               }
             }
