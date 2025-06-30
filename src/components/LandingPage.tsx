@@ -12,7 +12,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartChat }) => {
       <img 
         src="https://raw.githubusercontent.com/puddel12345/TEST/main/Jo_Main_v3.webp"
         alt="Jo"
-        className="absolute inset-0 w-full h-full object-cover object-bottom"
+        className="absolute inset-0 w-full h-full object-cover object-top"
       />
 
       {/* Content overlay */}
