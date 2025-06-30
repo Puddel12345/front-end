@@ -49,7 +49,7 @@ const ChatPage = ({ onBack }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isStreamingResponse, currentStreamingMessage]);
+  }, [messages.filter(m => m.sender === 'user').length]);
 
   // REAL-TIME Streaming function with UI updates
   const getJoResponseStreaming = async (userMessage) => {

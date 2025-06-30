@@ -10,7 +10,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartChat }) => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Full-frame background image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
         style={{
           backgroundImage: 'url(https://raw.githubusercontent.com/puddel12345/TEST/main/Jo_Main_v3.webp)',
         }}
