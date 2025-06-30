@@ -312,8 +312,8 @@ const ChatPage = ({ onBack }) => {
               );
             })}
 
-            {/* Real-time streaming message */}
-            {isStreamingResponse && currentStreamingMessage && (
+            {/* Single typing/streaming box - seamless transition */}
+            {(isTyping || isStreamingResponse) && (
               <div className="flex justify-start">
                 <div className="relative w-full max-w-[280px] ml-2">
                   <img
@@ -322,7 +322,7 @@ const ChatPage = ({ onBack }) => {
                     className="absolute w-8 h-8 rounded-full object-cover z-10 -top-1 -left-1"
                   />
                   <div 
-                    className="bg-sky-200 px-5 py-4 rounded-2xl rounded-tl-md w-full border-l-4 border-blue-400"
+                    className={`bg-sky-200 px-5 py-4 rounded-2xl rounded-tl-md w-full ${currentStreamingMessage ? 'border-l-4 border-blue-400' : ''}`}
                     style={{
                       marginTop: '4px',
                       paddingTop: '18px',
@@ -332,38 +332,18 @@ const ChatPage = ({ onBack }) => {
                       marginLeft: '12px'
                     }}
                   >
-                    <div className="text-sm leading-relaxed">
-                      {currentStreamingMessage}
-                      <span className="inline-block w-2 h-4 bg-blue-500 ml-1 animate-pulse"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Typing indicator - only when no streaming content yet */}
-            {(isTyping || (isStreamingResponse && !currentStreamingMessage)) && (
-              <div className="flex justify-start">
-                <div className="relative w-full max-w-[280px] ml-2">
-                  <img
-                    src="https://raw.githubusercontent.com/puddel12345/TEST/main/Jo-Matcha.webp"
-                    alt="Jo"
-                    className="absolute w-8 h-8 rounded-full object-cover z-10 -top-1 -left-1"
-                  />
-                  <div 
-                    className="bg-sky-200 px-5 py-4 rounded-2xl rounded-tl-md w-full"
-                    style={{
-                      marginTop: '4px',
-                      paddingTop: '18px',
-                      paddingLeft: '20px',
-                      paddingBottom: '16px',
-                      minHeight: '52px',
-                      marginLeft: '12px'
-                    }}
-                  >
-                    <div className="text-sm text-gray-600 italic animate-pulse">
-                      Bin dabei zu antworten...
-                    </div>
+                    {currentStreamingMessage ? (
+                      // Show streaming content with cursor
+                      <div className="text-sm leading-relaxed">
+                        {currentStreamingMessage}
+                        <span className="inline-block w-2 h-4 bg-blue-500 ml-1 animate-pulse"></span>
+                      </div>
+                    ) : (
+                      // Show "Bin dabei zu antworten..." while waiting
+                      <div className="text-sm text-gray-600 italic animate-pulse">
+                        Bin dabei zu antworten...
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
