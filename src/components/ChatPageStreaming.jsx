@@ -211,9 +211,6 @@ const ChatPage = ({ onBack }) => {
               
               <div className="text-center">
                 <h2 className="text-lg font-medium text-gray-800">Dein Chat</h2>
-                {isStreamingResponse && (
-                  <div className="text-xs text-blue-500 animate-pulse">Streaming...</div>
-                )}
               </div>
               
               <button
@@ -240,8 +237,7 @@ const ChatPage = ({ onBack }) => {
               <div>
                 <h3 className="font-semibold text-gray-900 text-lg">JOurney Bestie</h3>
                 <p className="text-sm text-gray-500">
-                  Jo Wünsche • Claude Opus 4 
-                  {isStreamingResponse && ' • Live Streaming'}
+                  Jo Wünsche
                 </p>
               </div>
             </div>
@@ -316,37 +312,9 @@ const ChatPage = ({ onBack }) => {
               );
             })}
 
-            {/* Real-time streaming message */}
-            {isStreamingResponse && currentStreamingMessage && (
-              <div className="flex justify-start">
-                <div className="relative w-full max-w-[280px] ml-2">
-                  <img
-                    src="https://raw.githubusercontent.com/puddel12345/TEST/main/Jo-Matcha.webp"
-                    alt="Jo"
-                    className="absolute w-8 h-8 rounded-full object-cover z-10 -top-1 -left-1"
-                  />
-                  <div 
-                    className="bg-sky-200 px-5 py-4 rounded-2xl rounded-tl-md w-full border-l-4 border-blue-400"
-                    style={{
-                      marginTop: '4px',
-                      paddingTop: '18px',
-                      paddingLeft: '20px',
-                      paddingBottom: '16px',
-                      minHeight: '52px',
-                      marginLeft: '12px'
-                    }}
-                  >
-                    <div className="text-sm leading-relaxed">
-                      {currentStreamingMessage}
-                      <span className="inline-block w-2 h-4 bg-blue-500 ml-1 animate-pulse"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* Typing indicator */}
-            {isTyping && !isStreamingResponse && (
+            {(isTyping || isStreamingResponse) && (
               <div className="flex justify-start">
                 <div className="relative w-full max-w-[280px] ml-2">
                   <img
@@ -365,10 +333,8 @@ const ChatPage = ({ onBack }) => {
                       marginLeft: '12px'
                     }}
                   >
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="text-sm text-gray-600 italic animate-pulse">
+                      Bin dabei zu antworten...
                     </div>
                   </div>
                 </div>
