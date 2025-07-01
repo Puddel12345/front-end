@@ -9,11 +9,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartChat }) => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Full-frame background image */}
-      <img 
-        src="https://raw.githubusercontent.com/puddel12345/TEST/main/Jo_Main_v3.webp"
-        alt="Jo"
-        className="absolute inset-0 w-full h-full object-cover object-top"
-      />
+        <img 
+          src="https://raw.githubusercontent.com/puddel12345/TEST/main/Jo_Main_v3.webp"
+          alt="Jo"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            objectPosition: '20% 0%',  // Moves image left (adjust percentage as needed)
+            transform: 'scale(0.85)',   // Makes image smaller (adjust scale as needed)
+            transformOrigin: 'left top' // Ensures scaling happens from top-left corner
+          }}
+        />
 
       {/* Content overlay */}
       <div className="relative z-10 min-h-screen flex flex-col">
